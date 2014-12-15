@@ -3,20 +3,41 @@ var flexSdk = require('flex-sdk');
 var _ = require('lodash');
 var path = require('path');
 var chalk = require('chalk');
+
+function buildCommandLineOptions(opts) {
+	var cmdLineOpts = "";
+	for(var key in opts) {
+		if(key == 'defines') {
+			var defines = opts[key];
+			for (var defineKey in defines) {
+				var defineType = typeof defines[defineKey];
+				console.log(defineType);
+				var defineString = defines[defineKey];
+				switch(defineType) {
+					case 'string':
+						defineString = '\\\"' + defineString + '\\\"';
+						break;
+					default:
+				}
+				cmdLineOpts += '-define=' + defineKey + ',"' + defineString + '" ';
+			}
+		} else {
+			var value = opts[key];
+			if(key == 'output' || key == 'o') {
+				value = path.resolve(value);
+			}
+			cmdLineOpts += '-' + key + '=' + value + ' ';
+		}
+	}
+	return cmdLineOpts;
+}
+
 function compileActionscript(inputPath, opts, callback) {
 	console.log('compile!');
-	cmdLineOpts = "";
-	var outputFile;
-	for(var key in opts) {
-		var value = opts[key];
-		if(key == 'output' || key == 'o') {
-			value = path.resolve(value);
-			outputFile = value;
-		}
-		cmdLineOpts += '-' + key + '=' + value + ' ';
-	}
+	var outputFile = path.resolve(opts.output || opts.o);
+	var cmdLineOpts = buildCommandLineOptions(opts);
 	var commandLine = flexSdk.bin.mxmlc + ' ' + cmdLineOpts + ' ' + path.resolve(inputPath);
-	console.log(commandLine);
+	console.log(chalk.grey(commandLine));
 	childProcess.exec(commandLine, null, function(err, stdout, stderr) {
 		// TODO: Probably want to do something more here...? Not positive yet.
 		var fail = false;
