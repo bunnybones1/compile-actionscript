@@ -1,0 +1,33 @@
+{
+  "name": "compile-actionscript",
+  "version": "1.0.0",
+  "description": "A nodejs module for compiling actionscript into SWFs.",
+  "main": "index.js",
+  "license": "MIT",
+  "author": {
+    "name": "Tomasz Dysinski",
+    "email": "oz@bunnybones.com",
+    "url": "https://github.com/bunnybones1"
+  },
+  "dependencies": {
+    "chalk": "^0.5.1",
+    "flex-sdk": "^4.6.0-0",
+    "lodash": "^2.4.1"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "node test.js"
+  },
+  "keywords": [
+    "as3",
+    "swf"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/bunnybones1/compile-actionscript.git"
+  },
+  "homepage": "https://github.com/bunnybones1/compile-actionscript",
+  "bugs": {
+    "url": "https://github.com/bunnybones1/compile-actionscript/issues"
+  }
+}
