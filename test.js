@@ -10,4 +10,8 @@ var opts = {
 
 compileActionscript(inputPath, opts, function() {
 	console.log('complete');
+},
+function(e) {
+	console.log('ERROR!');
+	console.log(e);
 })
