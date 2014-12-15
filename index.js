@@ -3,7 +3,7 @@ var flexSdk = require('flex-sdk');
 var _ = require('lodash');
 var path = require('path');
 var chalk = require('chalk');
-function compileActionscript(inputPath, opts, callback, errorCallback) {
+function compileActionscript(inputPath, opts, callback) {
 	console.log('compile!');
 	cmdLineOpts = "";
 	var outputFile;
@@ -41,13 +41,11 @@ function compileActionscript(inputPath, opts, callback, errorCallback) {
 			console.log(chalk.green('File "' + outputFile + '" created.'));
 			callback();
 		} else {
-			if(errorCallback) {
-				errorCallback({
-					err: new Error('Failed to compile swf.'),
-					stdout: stdout,
-					stderr: stderr
-				});
-			}
+			callback({
+				err: new Error('Failed to compile swf.'),
+				stdout: stdout,
+				stderr: stderr
+			});
 		}
 	});
 }
