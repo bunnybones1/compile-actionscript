@@ -1,6 +1,6 @@
 {
   "name": "compile-actionscript",
-  "version": "1.3.0",
+  "version": "1.4.0",
   "description": "A nodejs module for compiling actionscript into SWFs.",
   "main": "index.js",
   "license": "MIT",
