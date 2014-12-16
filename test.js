@@ -1,16 +1,24 @@
 var compileActionscript = require('./');
 
-var inputPath = 'example/Main.as';
+var inputPath = './example/src/Main.as';
 console.log('compiling', inputPath);
 var opts = {
-	'output': 'example/Main.swf',
+	'output': './example/bin/Main.swf',
 	'swf-version': 13,
 	'use-gpu': true,
 	'defines': {
 		'STATUS::testNumber': 1.0,
-		'STATUS::testBool': true,
+		'STATUS::testBoolean': true,
 		'STATUS::log': 'Hello World!'
-	}
+	},
+	'source-paths': [
+		'./example/extraSrc',
+		'./example/extraSrc2'
+	],
+	//COMING SOON!
+	// 'library-paths': [
+	// 	'example/libs'
+	// ]
 };
 
 compileActionscript(inputPath, opts, function() {

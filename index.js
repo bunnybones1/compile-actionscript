@@ -4,23 +4,44 @@ var _ = require('lodash');
 var path = require('path');
 var chalk = require('chalk');
 
-function buildCommandLineOptions(opts) {
-	var cmdLineOpts = "";
-	for(var key in opts) {
-		if(key == 'defines') {
-			var defines = opts[key];
-			for (var defineKey in defines) {
-				var defineType = typeof defines[defineKey];
-				console.log(defineType);
-				var defineString = defines[defineKey];
-				switch(defineType) {
+var compileOptionListSettings = {
+	'defines' : { base: 'define', padStrings: true},
+	'source-paths' : { base: 'source-path', addTo : true},
+	'library-paths' : { base: 'library-path', addTo : true}
+}
+
+function createCommandLineOptionList(list, listOptions) {
+	cmdLineSnippet = '';
+	var equals = listOptions.addTo ? '+=' : '=';
+	console.log(chalk.yellow(list instanceof Array));
+	if(list instanceof Array) {
+		list.forEach(function(item){ 
+			cmdLineSnippet += '-' + listOptions.base + equals + '"' + item + '" ';
+		});
+	} else {
+		for (var key in list) {
+			var item = list[key]
+			var itemType = typeof item;
+			if(listOptions.padStrings) {
+				switch(itemType) {
 					case 'string':
-						defineString = '\\\"' + defineString + '\\\"';
+						item = '\\\"' + item + '\\\"';
 						break;
 					default:
 				}
-				cmdLineOpts += '-define=' + defineKey + ',"' + defineString + '" ';
 			}
+			cmdLineSnippet += '-' + listOptions.base + equals + key + ',"' + item + '" ';
+		}
+	}
+	return cmdLineSnippet;
+}
+
+function buildCommandLineOptions(opts) {
+	var cmdLineOpts = "";
+	for(var key in opts) {
+		if(compileOptionListSettings[key]) {
+			console.log(chalk.yellow(key));
+			cmdLineOpts += createCommandLineOptionList(opts[key], compileOptionListSettings[key]);
 		} else {
 			var value = opts[key];
 			if(key == 'output' || key == 'o') {
